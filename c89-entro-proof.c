@@ -2,38 +2,37 @@
 #include "entro-hash.h"
 #include "entro-shift.h"
 
-void *entro_proof_hash(const char *server_input, uint32 *entro_proof) {
-  const char finalization_input[2] = {111, 0};
+void *entro_proof_hash(const char *input, uint32 *entro_proof) {
   unsigned char i = 1;
 
-  entro_proof[0] = entro_hash(server_input, 0);
+  entro_proof[0] = entro_hash(input, 0);
 
   while (i != 32) {
-    entro_proof[i] = entro_hash(server_input, entro_proof[i - 1]);
+    entro_proof[i] = entro_hash(input, entro_proof[i - 1]);
     i++;
   }
 
   while (i != 1) {
     i--;
-    entro_proof[i] = entro_hash(finalization_input, entro_proof[i - 1]);
+    entro_proof[i] = entro_hash(input, entro_proof[i - 1]);
   }
 
-  entro_proof[0] = entro_hash(finalization_input, entro_proof[31]);
+  entro_proof[0] = entro_hash(input, entro_proof[31]);
 }
 
 uint32 entro_proof_randomize(const char *client_input, const char *server_input, uint32 *entro_proof) {
-  uint32 entropy = entro_proof[0];
-  unsigned long long i = 0;
+  uint32 entropy = entro_proof[31];
+  unsigned long i = 0;
 
   while (client_input[i] != 0) {
-    entropy = entro_shift(client_input[i] + entro_proof[~i & 31] + ~entropy);
+    entropy = entro_shift(client_input[i] + entro_proof[i & 31] + entropy);
     i++;
   }
 
   i = 0;
 
   while (server_input[i] != 0) {
-    entropy = entro_shift(server_input[i] + entro_proof[~i & 31] + ~entropy);
+    entropy = entro_shift(server_input[i] + entro_proof[i & 31] + entropy);
     i++;
   }
 
