@@ -8,16 +8,16 @@ void *entro_proof_hash(const char *casino_input, uint32 *entro_proof) {
   entro_proof[0] = entro_hash(casino_input, 0);
 
   while (i != 32) {
-    entro_proof[i] = entro_hash(casino_input, entro_proof[i - 1]);
+    entro_proof[i] = entro_hash(casino_input, 0) ^ entro_proof[i - 1];
     i++;
   }
 
   while (i != 1) {
     i--;
-    entro_proof[i] = entro_hash(casino_input, entro_proof[i - 1]);
+    entro_proof[i] = entro_hash(casino_input, 0) ^ entro_proof[i - 1];
   }
 
-  entro_proof[0] = entro_hash(casino_input, entro_proof[31]);
+  entro_proof[0] = entro_hash(casino_input, 0) ^ entro_proof[31];
 }
 
 uint32 entro_proof_randomize(const char *player_input, const char *casino_input, uint32 *entro_proof) {
