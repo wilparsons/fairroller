@@ -37,7 +37,6 @@ int main(void) {
 
   printf("\n");
   printf("%s\n\n", casino_input);
-  printf("\n");
   entro_proof_hash(casino_input, entro_proof);
   i = 0;
 
