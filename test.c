@@ -20,8 +20,8 @@ int main(void) {
     0x91, 0x92, 0x93, 0x94
   };
   unsigned char cards_count = 52;
-  uint32 entro_proof[32] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  uint32 entropy = 0;
+  uint32_t proof[32] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  uint32_t entropy = 0;
   unsigned char i = 0;
 
   i = 0;
@@ -37,19 +37,21 @@ int main(void) {
 
   printf("\n");
   printf("%s\n\n", casino_input);
-  entro_proof_hash(casino_input, entro_proof);
+  entro_proof_hash(casino_input, proof);
   i = 0;
 
   while (i != 32) {
-    printf("0x%08X ", entro_proof[i]);
+    printf("0x%08X", proof[i]);
     i++;
 
     if ((i & 3) == 0) {
       printf("\n");
+    } else {
+      printf(" ");
     }
   }
 
-  entropy = entro_proof_randomize(casino_input, player_input, entro_proof);
+  entropy = entro_proof_randomize(casino_input, player_input);
   printf("\n");
   printf("%s\n\n", player_input);
   printf("0x%08X\n\n", entropy);
@@ -57,11 +59,13 @@ int main(void) {
   i = 0;
 
   while (i != cards_count) {
-    printf("0x%02X ", cards[i]);
+    printf("0x%02X", cards[i]);
     i++;
 
     if ((i & 3) == 0) {
       printf("\n");
+    } else {
+      printf(" ");
     }
   }
 
