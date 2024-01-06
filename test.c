@@ -27,11 +27,13 @@ int main(void) {
   i = 0;
 
   while (i != cards_count) {
-    printf("0x%02X ", cards[i]);
+    printf("0x%02X", cards[i]);
     i++;
 
     if ((i & 3) == 0) {
       printf("\n");
+    } else {
+      printf(" ");
     }
   }
 
