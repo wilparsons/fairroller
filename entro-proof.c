@@ -94,13 +94,8 @@ void entro_proof_shuffle(unsigned short count, unsigned char *input, uint32_t en
 
   if (count > 1) {
     while (i != count) {
-      position = entropy << 31;
-      entropy = entro_shift((uint32_t) entropy);
-      position += entropy;
-
-      if (position >= count) {
-        position %= count;
-      }
+      entropy = entro_shift(entropy);
+      position = entropy % count;
 
       if (position != i) {
         copied_input = input[i];
