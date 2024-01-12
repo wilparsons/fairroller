@@ -20,7 +20,7 @@ int main(void) {
     0x91, 0x92, 0x93, 0x94
   };
   unsigned char cards_count = 52;
-  uint32_t proof[32] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  uint32_t proof[32];
   uint32_t entropy = 0;
   unsigned char i = 0;
 
