@@ -37,8 +37,7 @@ int main(void) {
     }
   }
 
-  printf("\n");
-  printf("%s\n\n", casino_input);
+  printf("\n%s\n\n", casino_input);
   entro_proof_hash(casino_input, proof);
   i = 0;
 
@@ -54,8 +53,7 @@ int main(void) {
   }
 
   entropy = entro_proof_randomize(casino_input, player_input);
-  printf("\n");
-  printf("%s\n\n", player_input);
+  printf("\n%s\n\n", player_input);
   printf("0x%08X\n\n", entropy);
   entro_proof_shuffle(cards_count, cards, entropy);
   i = 0;
