@@ -3,7 +3,7 @@
 #include "entro-shift.h"
 
 void entro_proof_hash(const char *casino_input, uint32_t *entropy) {
-    char auxiliary[4];
+  char auxiliary[4];
   unsigned long i = 0;
 
   entropy[0] = 0;
