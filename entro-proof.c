@@ -3,38 +3,65 @@
 #include "entro-shift.h"
 
 void entro_proof_hash(const char *casino_input, uint32_t *entropy) {
-  entropy[0] = entro_hash(casino_input, 0) + 1;
-  entropy[1] = (entro_hash(casino_input, entropy[0]) + 2) ^ entropy[0];
-  entropy[2] = (entro_hash(casino_input, entropy[1]) + 3) ^ entropy[1];
-  entropy[3] = (entro_hash(casino_input, entropy[2]) + 4) ^ entropy[2];
-  entropy[4] = (entro_hash(casino_input, entropy[3]) + 5) ^ entropy[3];
-  entropy[5] = (entro_hash(casino_input, entropy[4]) + 6) ^ entropy[4];
-  entropy[6] = (entro_hash(casino_input, entropy[5]) + 7) ^ entropy[5];
-  entropy[7] = (entro_hash(casino_input, entropy[6]) + 8) ^ entropy[6];
-  entropy[8] = (entro_hash(casino_input, entropy[7]) + 9) ^ entropy[7];
-  entropy[9] = (entro_hash(casino_input, entropy[8]) + 10) ^ entropy[8];
-  entropy[10] = (entro_hash(casino_input, entropy[9]) + 11) ^ entropy[9];
-  entropy[11] = (entro_hash(casino_input, entropy[10]) + 12) ^ entropy[10];
-  entropy[12] = (entro_hash(casino_input, entropy[11]) + 13) ^ entropy[11];
-  entropy[13] = (entro_hash(casino_input, entropy[12]) + 14) ^ entropy[12];
-  entropy[14] = (entro_hash(casino_input, entropy[13]) + 15) ^ entropy[13];
-  entropy[15] = (entro_hash(casino_input, entropy[14]) + 16) ^ entropy[14];
-  entropy[16] = (entro_hash(casino_input, entropy[15]) + 17) ^ entropy[15];
-  entropy[17] = (entro_hash(casino_input, entropy[16]) + 18) ^ entropy[16];
-  entropy[18] = (entro_hash(casino_input, entropy[17]) + 19) ^ entropy[17];
-  entropy[19] = (entro_hash(casino_input, entropy[18]) + 20) ^ entropy[18];
-  entropy[20] = (entro_hash(casino_input, entropy[19]) + 21) ^ entropy[19];
-  entropy[21] = (entro_hash(casino_input, entropy[20]) + 22) ^ entropy[20];
-  entropy[22] = (entro_hash(casino_input, entropy[21]) + 23) ^ entropy[21];
-  entropy[23] = (entro_hash(casino_input, entropy[22]) + 24) ^ entropy[22];
-  entropy[24] = (entro_hash(casino_input, entropy[23]) + 25) ^ entropy[23];
-  entropy[25] = (entro_hash(casino_input, entropy[24]) + 26) ^ entropy[24];
-  entropy[26] = (entro_hash(casino_input, entropy[25]) + 27) ^ entropy[25];
-  entropy[27] = (entro_hash(casino_input, entropy[26]) + 28) ^ entropy[26];
-  entropy[28] = (entro_hash(casino_input, entropy[27]) + 29) ^ entropy[27];
-  entropy[29] = (entro_hash(casino_input, entropy[28]) + 30) ^ entropy[28];
-  entropy[30] = (entro_hash(casino_input, entropy[29]) + 31) ^ entropy[29];
-  entropy[31] = (entro_hash(casino_input, entropy[30]) + 32) ^ entropy[30];
+    char auxiliary[4];
+  unsigned long i = 0;
+
+  entropy[0] = 0;
+
+  while (
+    i != 31 &&
+    casino_input[i] != 0
+  ) {
+    if (casino_input[i] != 0) {
+      auxiliary[0] = casino_input[i];
+
+      if (casino_input[i + 1] != 0) {
+        auxiliary[1] = casino_input[i + 1];
+
+        if (casino_input[i + 2] != 0) {
+          auxiliary[2] = casino_input[i + 2];
+          auxiliary[3] = 0;
+        } else {
+          auxiliary[2] = 0;
+        }
+      } else {
+        auxiliary[1] = 0;
+      }
+    } else {
+      auxiliary[0] = 0;
+    }
+
+    i++;
+    entropy[i] = entro_hash(auxiliary, entropy[i - 1]);
+  }
+
+  while (i != 31) {
+    i++;
+    entropy[i] = entro_hash("", entropy[i - 1]);
+  }
+
+  i = 0;
+
+  while (casino_input[i] != 0) {
+    auxiliary[0] = casino_input[i];
+
+    if (casino_input[i + 1] != 0) {
+      auxiliary[1] = casino_input[i + 1];
+
+      if (casino_input[i + 2] != 0) {
+        auxiliary[2] = casino_input[i + 2];
+        auxiliary[3] = 0;
+      } else {
+        auxiliary[2] = 0;
+      }
+    } else {
+      auxiliary[1] = 0;
+    }
+
+    entropy[i & 31] += entro_hash(auxiliary, entropy[(i + 2) & 31]) ^ entropy[(i + 1) & 31];
+    i++;
+  }
+
   entropy[0] ^= entropy[31];
   entropy[1] ^= entropy[0];
   entropy[2] ^= entropy[1];
@@ -66,6 +93,7 @@ void entro_proof_hash(const char *casino_input, uint32_t *entropy) {
   entropy[28] ^= entropy[27];
   entropy[29] ^= entropy[28];
   entropy[30] ^= entropy[29];
+  entropy[31] ^= entropy[30];
 }
 
 uint32_t entro_proof_randomize(const char *casino_input, const char *player_input) {
