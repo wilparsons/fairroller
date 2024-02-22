@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "entro-proof.h"
+#include "fairroller.h"
 
 int main(void) {
   const char *casino_input = "1111111111";
@@ -20,7 +20,7 @@ int main(void) {
     0x91, 0x92, 0x93, 0x94
   };
   unsigned char cards_count = 52;
-  uint32_t proof[32];
+  uint32_t proof[8];
   uint32_t entropy = 0;
   unsigned char i = 0;
 
@@ -38,10 +38,10 @@ int main(void) {
   }
 
   printf("\n%s\n\n", casino_input);
-  entro_proof_hash(casino_input, proof);
+  orbithash(casino_input, proof);
   i = 0;
 
-  while (i != 32) {
+  while (i != 8) {
     printf("0x%08X", proof[i]);
     i++;
 
@@ -52,10 +52,10 @@ int main(void) {
     }
   }
 
-  entropy = entro_proof_randomize(casino_input, player_input);
+  entropy = fairroller_randomize(casino_input, player_input);
   printf("\n%s\n\n", player_input);
   printf("0x%08X\n\n", entropy);
-  entro_proof_shuffle(cards_count, cards, entropy);
+  fairroller_shuffle(cards_count, cards, entropy);
   i = 0;
 
   while (i != cards_count) {
