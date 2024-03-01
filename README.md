@@ -1,5 +1,5 @@
 # FairRoller
-![FairRoller Logo](https://repository-images.githubusercontent.com/737368018/07e107b0-d2a0-4166-8600-0b5356eeae75)
+![FairRoller Logo](https://repository-images.githubusercontent.com/737368018/80f7aa96-1277-4f80-b939-29dc4066de5e)
 
 ## Description
 FairRoller is a casino-to-player provable fairness algorithm.
