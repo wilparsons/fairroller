@@ -105,8 +105,3 @@ This is the item shuffling function that accepts the 3 following arguments.
 `entropy` is the 32-bit unsigned integer result from `fairroller_randomize()`.
 
 The return value data type is `void`.
-
-## Support
-FairRoller was designed and developed by [Wil Parsons](https://github.com/wilparsons).
-
-I'm available for freelance work to extend, implement or modify FairRoller and other algorithms.
